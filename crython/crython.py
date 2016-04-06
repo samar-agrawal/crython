@@ -16,8 +16,14 @@ DAY_NAME = dict((v.lower(),k) for k,v in enumerate(calendar.day_name))      #(ex
 DAY_ABBR = dict((v.lower(),k) for k,v in enumerate(calendar.day_abbr))      #(ex: Mon, Tue, etc)
 MON_NAME = dict((v.lower(),k) for k,v in enumerate(calendar.month_name))    #(ex: January, February, etc)
 MON_ABBR = dict((v.lower(),k) for k,v in enumerate(calendar.month_abbr))    #(ex: Jan, Feb, etc)
-PHRASES  = dict(DAY_NAME.items() + DAY_ABBR.items() + MON_NAME.items() + MON_ABBR.items())
+PHRASES  = dict(list(DAY_NAME.items()) + list(DAY_ABBR.items()) + list(MON_NAME.items()) + list(MON_ABBR.items()))
 PHRASES_REGEX = re.compile('|'.join(PHRASES.keys()).lstrip('|'), flags=re.IGNORECASE)
+
+try:
+    long
+except NameError:
+    long = int
+    basestring = (str, bytes)
 
 class CronField(object):
     SPECIALS   = set(['*', '/', '%', ',', '-', 'L', 'W', '#', '?'])
@@ -58,7 +64,7 @@ class CronField(object):
                         return self.min <= item <= self.max
                     if value == 'L':                                #last day of month (ex: L ==> 31)
                         return self.max == item                     #TODO: last_dom not necessary to be max (feb)
-                    result |=  int(value) == item                   #single digit (ex: 10)
+                    result |=  int(float(value)) == item                   #single digit (ex: 10)
                     continue
                 if value[0] == '*':                                 #wildcard w/ step (ex: */2 ==> 0-59/2)
                     value = [self.min, self.max, value[1]]

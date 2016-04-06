@@ -11,12 +11,14 @@ This module is currently under development.
 To install crython from [pip](https://pypi.python.org/pypi/pip):
 ```bash
     $ pip install crython
+    $ pip3 install crython (For Python3)
 ```
 
 To install crython from source:
 ```bash
     $ git clone git@github.com:ahawker/crython.git
     $ python setup.py install
+    $ python3 setup.py install (For Python3)
 ```
 
 ### Usage
